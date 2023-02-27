@@ -3,7 +3,7 @@
 </script>
 
 <div class="my-3">
-    <input type="text" placeholder="Titulo" bind:value={libro.titulo} />&nbsp;
-    <input type="number" placeholder="Precio" bind:value={libro.precio} />
+    <input class="form-control mb-2" type="text" placeholder="Titulo" bind:value={libro.titulo} />
+    <input class="form-control" type="number" placeholder="Precio" bind:value={libro.precio} />
 </div>
 <slot />

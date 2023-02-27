@@ -71,4 +71,4 @@
     onMount(setup);
 </script>
 
-<input type="button" value={tipo.toUpperCase()} on:click={handler} />
+<input class="boton" type="button" value={tipo.toUpperCase()} on:click={handler} />

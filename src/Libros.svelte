@@ -23,15 +23,40 @@
     );
 </script>
 
-<Buscar bind:busqueda={patron} />
+<h1 class="pt-5">Libros</h1>
 
-<Libro bind:libro={libroInsertar}>
-    <Boton coleccion="libros" documento={libroInsertar} />
-</Libro>
+<div class="row">
+    <div class="col-12">
+        <div class="contenedor border rounded p-2">
+            <Buscar bind:busqueda={patron} />
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="contenedor border rounded p-2 mt-3">
+            <Libro bind:libro={libroInsertar}>
+                <Boton coleccion="libros" documento={libroInsertar} />
+            </Libro>
+        </div>
+    </div>
+</div>
 
-{#each datosFiltrados as libro}
-    <Libro bind:libro>
-        <Boton tipo="modificar" coleccion="libros" documento={libro} />
-        <Boton tipo="eliminar" coleccion="libros" documento={libro} />
-    </Libro>
-{/each}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 py-3">
+    {#each datosFiltrados as libro}
+        <div class="col">
+            <div class="p-2 border rounded contenedor mb-4">
+                <Libro bind:libro>
+                    <Boton
+                        tipo="modificar"
+                        coleccion="libros"
+                        documento={libro}
+                    />
+                    <Boton
+                        tipo="eliminar"
+                        coleccion="libros"
+                        documento={libro}
+                    />
+                </Libro>
+            </div>
+        </div>
+    {/each}
+</div>

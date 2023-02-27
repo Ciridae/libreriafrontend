@@ -5,7 +5,7 @@
     import Libros from "./Libros.svelte";
 </script>
 
-<main>
+<main class="container">
     <Route path="/" component="{Inicio}"></Route>
     <Route path="/libros" component="{Libros}"></Route>
     <Route path="/autores" component="{Autores}"></Route>
