@@ -9,7 +9,7 @@
 	border-radius: 5px;
 }
 
-@media (max-width: 575px) {
+@media (min-width: 425px) and (max-width: 575px) {
 
     .contenedor {
         width: 400px;
