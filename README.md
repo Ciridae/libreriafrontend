@@ -255,6 +255,8 @@ Este es el componente que se muestra al inicio de la página. Debe ser simple pa
 
 ```
 
+![Libros](Libros.png)
+
 **`Autores.svelte`**
 
 ```html
@@ -313,6 +315,9 @@ Este es el componente que se muestra al inicio de la página. Debe ser simple pa
     {/each}
 </div>
 ```
+
+![Autores](Autores.png)
+
 
 ## Otros componentes
 
