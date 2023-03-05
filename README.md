@@ -88,7 +88,7 @@ En el componente `App.svelte` vamos a definir la estructura y como se comportar�
 </style>
 ```
 
-En la sección de `script` importamos los paquetes y componentes que vayamos a usar. El componente `Router` que está en el paquete `svelte-routing`. Con este paquete tenemos los componentes necesarios para crear enrutadores (`Router`), enlaces (`Link`) y rutas (`Route`). Svelte no trae esto por defecto, por lo que hay que instalar el paquete:
+En la sección de `script` importamos los paquetes y componentes que vayamos a usar. El componente `Router` que está en el paquete `svelte-routing`, el cual es necesario para crear enrutadores (`Router`), enlaces (`Link`) y rutas (`Route`). Svelte no trae esto por defecto, por lo que hay que instalar el paquete:
 
 ```console
 npm  install  svelte-routing
@@ -101,7 +101,7 @@ La estructura del componente `App` está formada por un `Router`, dentro del cua
 
 ## Componentes de navegación y contenido
 
-Crearemos dos componentes llamados `Nav.svelte` y `Contenido.svelte`. Debe estar en la misma carpeta que el componente `App.svelte`.
+Creamos dos componentes llamados `Nav.svelte` y `Contenido.svelte`.
 
 **`Nav.svelte`**
 
@@ -169,13 +169,15 @@ El componente `Contenido` será la sección principal (`main`), con las rutas y 
 
 ## Componentes para el contenido
 
-Dentro del componente anterior `Contenido` podrán renderizarse distintos componentes, dependiendo del `Link` que pulsemos en la barra de navegación. Los componentes que podrán aparecer en `Contenido` son:
+En el componente`Contenido` vamos a renderizar otros componentes. El componente a mostrar será el que definamos para cada `Link`. Los posibles componentes son:
 
 - **Inicio**
 - **Libros**
 - **Autores**
 
 **`Inicio.svelte`**
+
+Este es el componente que se muestra al inicio de la página. Debe ser simple para una carga más rápida.
 
 ```html
 <div  class="text-center mt-5">
@@ -185,11 +187,7 @@ Dentro del componente anterior `Contenido` podrán renderizarse distintos compon
 </div>
 ```
 
-Este componente mostrará información acerca de la aplicación. Sólo posee código HTML y CSS. No necesita solicitar datos al servidor. Por tanto su carga es inmediata, y por este motivo lo mostraremos nada más iniciarse la aplicación. Ello permite una carga inicial de la aplicación instantánea.
-
-
 **`Libros.svelte`**
-
 
  ```html
  <script>
@@ -436,29 +434,38 @@ Este componente mostrará información acerca de la aplicación. Sólo posee có
 <label for="buscar">Buscar:</label>
 <input id="buscar" class="form-control" type="search" bind:value={busqueda}>
 ```
+
+
 ## Pasar información entre componentes
 
 ### Propiedades
 
-Desde el componente padre `Libros` pasamos el valor `camisa` a la propiedad `busqueda` del componente `Buscar`.
+Podemos comunicarnos con los componentes hijos a través de propiedades, las cuales pasaremos al utilizarlo.
 
-Por defecto, el sentido de la comunicación es Padre->Hijo. 
-
-Si deseamos que el hijo (`Buscar`) pueda pasar información al padre (`Libros`) haremos uso de la directiva **`bind`** en el componente padre, que quedaría así:
+Si lo que queremos es que el componente hijo pueda pasar información al padre, debemos usar **`bind`**:
 
 ```html
 <script>
-    let texto = "camisa";
+    export let busqueda = "";
 </script>
 
-<Buscar bind:busqueda={texto} />
+<input id="buscar" class="form-control" type="search" bind:value={busqueda}>
 ```
 
-El valor de la propiedad `busqueda`, que será modificada desde el componente `Buscar`, "subirá" hasta la variable `texto` del componente `Libros`.
+El valor de la propiedad `busqueda` se modifica en `Buscar` y subirá a la variable `patron` del componente `Libros`.
 
+```html
+<script>
+    let patron = "";
+</script>
+
+<Buscar bind:busqueda={patron} />
+```
 
 
 ### Contextos (setContext / getContext)
+
+Establecemos un contexto, utilizando clave valor.
 
 **`App.svelte`**
 
@@ -474,6 +481,8 @@ El valor de la propiedad `busqueda`, que será modificada desde el componente `B
     setContext("URL", URL);
 </script>	
 ```
+
+Recogemos el contexto y lo utilizamos.
 
 **`Boton.svelte`**
 
@@ -493,6 +502,8 @@ El valor de la propiedad `busqueda`, que será modificada desde el componente `B
 ```
 ### Almacenes (stores)
 
+Declaramos en nuestro almacén `store.js` un array vacío para nuestros datos en formato JSON.
+
 **`store.js`**
 
  ```javascript
@@ -501,8 +512,7 @@ import { writable } from "svelte/store";
 export const data = writable( [] );
 ```
 
-Declaramos en `store.js` un array vacío, que contendrá datos en formato JSON.
-
+Importamos el array de nuestro almacen y le asignamos la respuesta en formato JSON de la petición **fetch** al servidor.
 
 **`Libros.svelte`**
 
@@ -519,7 +529,7 @@ Declaramos en `store.js` un array vacío, que contendrá datos en formato JSON.
 </script>	
 ```
 
-En el componente `Libros.svelte` hacemos una petición **fetch** al servidor y guardamos los datos en formato JSON en la variable data del almacén. 
+Tambien lo utilizamos en `Boton.svelte` para dar reactividad a nuestra página.
 
 **Boton.svelte**
 
@@ -542,8 +552,6 @@ En el componente `Libros.svelte` hacemos una petición **fetch** al servidor y g
 	
 </script>
 ```
-
-En el componente `Boton.svelte` insertamos un nuevo libro en el servidor mediante una petición **fetch** de tipo POST. Si se guarda correctamente en el servidor, entonces actualizamos en consecuencia nuestra variable data del almacén:
 
 **`$data = [...$data, doc]`**
 
